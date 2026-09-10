@@ -1,0 +1,42 @@
+/* =========================================================================
+   tokens.css - the single source of truth for the QuizeRo design tokens.
+
+   Loaded by BOTH the game (index.html) and the editor (editor.html) so the
+   two can never drift apart. js/map.js repeats --navy and --slate because
+   WebGL paint properties cannot read CSS variables; if you change them here,
+   change them there too.
+   ========================================================================= */
+
+:root{
+  /* --navy and --slate are sampled directly from the supplied logo.png.
+     Do not eyeball these - the PR team will notice. The rest are tints of
+     the two, used for surfaces, borders and secondary text. */
+  --navy:        #17385F;
+  --navy-dark:   #102741;
+  --navy-soft:   #204E85;
+  --slate:       #66769A;
+  --slate-light: #9CA6BD;
+  --slate-pale:  #D4D9E3;
+  --paper:       #F4F6FB;
+  --white:       #FFFFFF;
+  --ink:         #1B2432;
+  --ink-soft:    #5A6478;
+
+  --ok:          #2E7D63;
+  --ok-pale:     #E3F2EB;
+  --bad:         #B8433C;
+  --bad-pale:    #FBE9E7;
+  --gold:        #D9A441;
+
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 22px;
+  --shadow: 0 6px 22px rgba(27,58,92,.16);
+  --shadow-lg: 0 12px 40px rgba(27,58,92,.24);
+
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+
+  --font: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+}

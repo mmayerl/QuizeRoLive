@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>QuizeRo &ndash; Editor</title>
+<link rel="icon" href="assets/icon-192.png" type="image/png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5/dist/maplibre-gl.css">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/marker.css">
+<link rel="stylesheet" href="css/editor.css">
+</head>
+<body>
+
+<header class="ed-top">
+  <span class="ed-logo">
+    <img src="assets/logo-mark.png" alt="Hochschule f&uuml;r Wirtschaft &amp; Gesellschaft des BFI Wien">
+  </span>
+  <div class="ed-title">
+    <strong>QuizeRo</strong>
+    <span>Orte- und Frageneditor</span>
+  </div>
+
+  <div class="ed-file" id="ed-file">
+    <span class="ed-file__name" id="file-name">&ndash;</span>
+    <span class="ed-file__dirty" id="file-dirty" hidden>ungespeicherte &Auml;nderungen</span>
+  </div>
+
+  <div class="ed-actions">
+    <button type="button" class="ebtn" id="btn-open">Datei &ouml;ffnen&hellip;</button>
+    <button type="button" class="ebtn" id="btn-load-game">Spieldatei laden</button>
+    <button type="button" class="ebtn" id="btn-new">Neu</button>
+    <button type="button" class="ebtn ebtn--issues" id="btn-issues" hidden></button>
+    <button type="button" class="ebtn ebtn--primary" id="btn-download">JSON herunterladen</button>
+  </div>
+  <input type="file" id="file-input" accept=".json,application/json" hidden>
+</header>
+
+<div class="ed-body">
+  <aside class="ed-panel" id="ed-panel">
+
+    <section class="ecard">
+      <button type="button" class="ecard__head" data-toggle="game-body">
+        <span>Spiel-Einstellungen</span><i></i>
+      </button>
+      <div class="ecard__body" id="game-body">
+        <div class="erow">
+          <label class="efield"><span>Titel</span>
+            <input type="text" id="g-title" placeholder="QuizeRo"></label>
+          <label class="efield"><span>Untertitel</span>
+            <input type="text" id="g-subtitle"></label>
+        </div>
+        <div class="erow">
+          <label class="efield"><span>Version</span>
+            <input type="text" id="g-version" placeholder="1.0.0"></label>
+          <div class="efield efield--btn">
+            <span>&nbsp;</span>
+            <button type="button" class="ebtn ebtn--small" id="btn-bump"
+              title="Erh&ouml;ht die letzte Stelle. Nach jeder Änderung nötig, damit alte Spielstände verworfen werden.">
+              Version erh&ouml;hen</button>
+          </div>
+        </div>
+        <div class="erow">
+          <label class="efield"><span>Standard-Radius (m)</span>
+            <input type="number" id="g-radius" min="5" max="500" step="1"></label>
+          <label class="efield efield--check">
+            <input type="checkbox" id="g-shuffle">
+            <span>Antworten mischen</span></label>
+        </div>
+        <details class="eadv">
+          <summary>Karte (nur bei Bedarf &auml;ndern)</summary>
+          <label class="efield"><span>Tile-URL</span>
+            <input type="text" id="g-tileurl" spellcheck="false"></label>
+          <label class="efield"><span>Tile-Attribution (HTML)</span>
+            <input type="text" id="g-tileattr" spellcheck="false"></label>
+          <div class="erow">
+            <label class="efield"><span>Start-Zoom</span>
+              <input type="number" id="g-zoom" min="1" max="20" step="0.5"></label>
+            <div class="efield efield--btn"><span>Startmitte</span>
+              <button type="button" class="ebtn ebtn--small" id="btn-centre-here">
+                Auf Kartenmitte setzen</button>
+            </div>
+          </div>
+          <p class="ehint" id="g-centre-txt"></p>
+        </details>
+      </div>
+    </section>
+
+    <section class="ecard">
+      <div class="ecard__head ecard__head--static">
+        <span>Orte <b id="loc-count">0</b></span>
+        <button type="button" class="ebtn ebtn--small" id="btn-add">+ Ort</button>
+      </div>
+      <ol class="loclist" id="loclist"></ol>
+      <p class="eempty" id="loc-empty">
+        Noch keine Orte. Lade eine JSON-Datei oder lege einen Ort an.
+      </p>
+    </section>
+
+    <p class="ecredit">
+      Adresssuche via <a href="https://nominatim.openstreetmap.org" target="_blank"
+      rel="noopener">Nominatim / OpenStreetMap</a>. Die Datei bleibt lokal &ndash;
+      es wird nichts hochgeladen.
+    </p>
+  </aside>
+
+  <main class="ed-mapwrap">
+    <div id="map"></div>
+    <div class="ed-maptools">
+      <button type="button" class="ebtn ebtn--small" id="btn-fit">Alle zeigen</button>
+      <button type="button" class="ebtn ebtn--small" id="btn-north">Norden oben</button>
+    </div>
+    <div class="ed-maphint" id="map-hint" hidden></div>
+    <p class="ed-maplegend">
+      Marker ziehen verschiebt den Ort &middot; Marker anklicken w&auml;hlt ihn aus
+    </p>
+  </main>
+</div>
+
+<div class="issues" id="issues" hidden>
+  <div class="issues__head">
+    <strong>Pr&uuml;fung</strong>
+    <button type="button" class="ebtn ebtn--small" id="btn-issues-close">Schlie&szlig;en</button>
+  </div>
+  <ul id="issues-list"></ul>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@5/dist/maplibre-gl.js"></script>
+<script src="js/geo.js"></script>
+<script src="js/basemap.js"></script>
+<script src="js/editor.js"></script>
+</body>
+</html>

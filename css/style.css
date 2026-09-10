@@ -1,0 +1,327 @@
+/* =========================================================================
+   QuizeRo - the game screens.
+   Design tokens (colours, radii, shadows) live in css/tokens.css, which must
+   be linked before this file.
+   ========================================================================= */
+
+
+*,*::before,*::after{ box-sizing:border-box; }
+[hidden]{ display:none !important; }
+
+html,body{
+  margin:0; padding:0;
+  height:100%;
+  overflow:hidden;
+  overscroll-behavior:none;
+  background:var(--navy);
+  color:var(--ink);
+  font-family:var(--font);
+  font-size:16px;
+  line-height:1.45;
+  -webkit-text-size-adjust:100%;
+  -webkit-tap-highlight-color:transparent;
+}
+
+button,input{ font:inherit; color:inherit; }
+
+/* ---------------------------------------------------------------- screens */
+.screen{
+  position:fixed; inset:0;
+  display:flex; flex-direction:column;
+  background:var(--paper);
+}
+
+/* ------------------------------------------------------------------ brand */
+/* The logo is used as supplied: original artwork, original colours, never
+   recoloured or redrawn. Where it has to sit on the navy bar it gets its own
+   white field instead (.topbar__logo). */
+.brand{ margin-bottom:34px; }
+.brand__logo{
+  display:block;
+  width:100%; max-width:300px; height:auto;
+}
+
+/* ------------------------------------------------------------ start screen */
+.screen--start{
+  background:
+    radial-gradient(120% 80% at 100% 0%, #234E7B 0%, transparent 60%),
+    linear-gradient(168deg, var(--navy) 0%, var(--navy-dark) 100%);
+}
+.start__scroll{
+  flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch;
+  padding:calc(var(--safe-t) + 34px) 26px calc(var(--safe-b) + 30px);
+  max-width:560px; width:100%; margin:0 auto;
+}
+.screen--start .brand{
+  background:var(--white);
+  padding:22px 24px; border-radius:var(--r-md);
+  box-shadow:var(--shadow);
+}
+.start__title{
+  margin:0; font-size:40px; line-height:1.05; letter-spacing:-.8px;
+  color:var(--white); font-weight:700;
+}
+.start__sub{
+  margin:8px 0 26px; color:var(--slate-light); font-size:17px;
+}
+
+.steps{ list-style:none; margin:0 0 28px; padding:0; }
+.steps li{
+  display:flex; gap:14px; align-items:flex-start;
+  padding:11px 0; color:#DDE3F0; font-size:15px;
+}
+.steps__n{
+  flex:none; width:27px; height:27px; border-radius:50%;
+  background:var(--slate); color:var(--white);
+  display:grid; place-items:center;
+  font-size:14px; font-weight:700;
+}
+
+.field{ display:block; margin-bottom:18px; }
+.field__label{
+  display:block; margin-bottom:7px;
+  font-size:13px; font-weight:700; letter-spacing:.6px;
+  text-transform:uppercase; color:var(--slate-light);
+}
+.field input{
+  width:100%; padding:15px 16px;
+  border:2px solid transparent; border-radius:var(--r-sm);
+  background:var(--white); color:var(--ink);
+  outline:none;
+}
+.field input:focus{ border-color:var(--slate); }
+
+/* ---------------------------------------------------------------- buttons */
+.btn{
+  display:block; width:100%;
+  padding:17px 20px; margin-bottom:12px;
+  border:2px solid transparent; border-radius:var(--r-sm);
+  font-size:17px; font-weight:700; letter-spacing:.2px;
+  cursor:pointer; text-align:center;
+  transition:transform .06s ease, background .15s ease, opacity .15s ease;
+}
+.btn:active{ transform:scale(.985); }
+.btn--primary{ background:var(--white); color:var(--navy); }
+.screen--quiz .btn--primary,
+.screen--end  .btn--primary{ background:var(--navy); color:var(--white); }
+.btn--ghost{ background:transparent; color:var(--white); border-color:rgba(255,255,255,.42); }
+.screen--end .btn--ghost{ color:var(--navy); border-color:var(--slate-pale); }
+.btn--link{
+  background:none; border:none; color:var(--slate-light);
+  font-size:14px; font-weight:600; text-decoration:underline; padding:8px;
+}
+.btn[disabled]{ opacity:.5; }
+
+.note{
+  margin:22px 0 0; font-size:13px; line-height:1.55; color:var(--slate-light);
+}
+.note strong{ color:#C7D0E4; }
+.note--err{
+  background:rgba(184,67,60,.18); border:1px solid rgba(255,255,255,.2);
+  color:#FFD9D6; padding:12px 14px; border-radius:var(--r-sm);
+}
+
+/* -------------------------------------------------------------- map screen */
+.screen--map{ background:var(--paper); }
+
+.topbar{
+  flex:none;
+  display:flex; align-items:center; gap:12px;
+  padding:calc(var(--safe-t) + 10px) 14px 10px;
+  background:var(--navy); color:var(--white);
+}
+.topbar__logo{
+  flex:none; display:block;
+  background:var(--white);
+  border-radius:9px; padding:6px 7px;
+}
+.topbar__logo img{ display:block; height:24px; width:auto; }
+.topbar__team{ flex:1; min-width:0; line-height:1.25; }
+.topbar__team strong{
+  display:block; font-size:15px;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.topbar__team span{ font-size:12.5px; color:var(--slate-light); }
+
+.score{ flex:none; text-align:right; line-height:1.05; }
+.score__val{ display:block; font-size:26px; font-weight:800; color:var(--gold); }
+.score__lbl{ font-size:10.5px; letter-spacing:1.1px; text-transform:uppercase; color:var(--slate-light); }
+
+.progressbar{ flex:none; height:4px; background:var(--navy-dark); }
+.progressbar i{ display:block; height:100%; background:var(--slate); transition:width .4s ease; }
+
+.mapwrap{ position:relative; flex:1; min-height:0; }
+#map{ position:absolute; inset:0; background:var(--slate-pale); }
+
+.mapctl{
+  position:absolute; right:12px; top:12px; z-index:5;
+  display:flex; flex-direction:column; gap:9px;
+}
+.iconbtn{
+  width:46px; height:46px; padding:0;
+  border:none; border-radius:14px;
+  background:var(--white); color:var(--navy);
+  box-shadow:var(--shadow);
+  display:grid; place-items:center;
+  font-size:23px; font-weight:700; cursor:pointer;
+}
+.iconbtn:active{ background:var(--slate-pale); }
+.iconbtn svg{ width:26px; height:26px; }
+.iconbtn--accent{ background:var(--navy); color:var(--white); }
+.iconbtn--accent.is-off{ background:var(--white); color:var(--slate); }
+#needle{ transition:transform .18s ease-out; }
+
+.banner{
+  position:absolute; left:12px; right:70px; top:12px; z-index:6;
+  background:var(--navy); color:var(--white);
+  padding:11px 14px; border-radius:var(--r-sm);
+  font-size:13.5px; line-height:1.4;
+  box-shadow:var(--shadow);
+}
+.banner.is-warn{ background:var(--bad); }
+.devbadge{
+  position:absolute; left:12px; bottom:12px; z-index:6;
+  background:var(--gold); color:var(--navy-dark);
+  padding:6px 11px; border-radius:999px;
+  font-size:11.5px; font-weight:700;
+}
+
+/* the player marker (the target pins live in css/marker.css) */
+.me{ width:56px; height:56px; line-height:0; }
+.me__cone{ fill:var(--navy-soft); opacity:.38; }
+.me__ring{ fill:var(--white); }
+.me__dot { fill:var(--navy); }
+
+/* ------------------------------------------------------------------ sheet */
+.sheet{
+  flex:none;
+  background:var(--white);
+  border-radius:var(--r-lg) var(--r-lg) 0 0;
+  margin-top:-18px; position:relative; z-index:4;
+  padding:16px 18px calc(var(--safe-b) + 16px);
+  box-shadow:0 -6px 24px rgba(27,58,92,.14);
+}
+.sheet__row{ display:flex; align-items:center; gap:14px; }
+.sheet__arrow{
+  flex:none; width:46px; height:46px; border-radius:50%;
+  background:var(--paper); color:var(--navy);
+  display:grid; place-items:center;
+}
+.sheet__arrow svg{ width:26px; height:26px; transition:transform .2s ease-out; }
+.sheet__txt{ flex:1; min-width:0; line-height:1.3; }
+.sheet__txt strong{
+  display:block; font-size:16px; color:var(--navy);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.sheet__txt span{ font-size:13px; color:var(--ink-soft); }
+.sheet__dist{
+  flex:none; font-size:20px; font-weight:800; color:var(--navy);
+  font-variant-numeric:tabular-nums;
+}
+.sheet__acc{ margin:9px 0 0; font-size:11.5px; color:var(--slate); }
+
+/* ------------------------------------------------------------- quiz screen */
+.screen--quiz{ background:var(--paper); }
+.quiz__scroll{
+  flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch;
+  padding:calc(var(--safe-t) + 26px) 22px 18px;
+  max-width:560px; width:100%; margin:0 auto;
+}
+.quiz__eyebrow{
+  margin:0 0 6px; font-size:12px; font-weight:800;
+  letter-spacing:1.3px; text-transform:uppercase; color:var(--slate);
+}
+.quiz__place{ margin:0; font-size:27px; line-height:1.12; color:var(--navy); letter-spacing:-.4px; }
+.quiz__intro{ margin:12px 0 0; font-size:14.5px; color:var(--ink-soft); }
+.quiz__q{
+  margin:26px 0 20px; font-size:20px; line-height:1.34;
+  color:var(--ink); font-weight:700;
+}
+
+.answers{ display:flex; flex-direction:column; gap:11px; }
+.answer{
+  display:flex; align-items:center; gap:13px;
+  width:100%; min-height:60px;
+  padding:13px 15px; text-align:left;
+  background:var(--white); color:var(--ink);
+  border:2px solid var(--slate-pale); border-radius:var(--r-sm);
+  font-size:16px; line-height:1.35; cursor:pointer;
+  transition:border-color .15s ease, background .15s ease;
+}
+.answer__key{
+  flex:none; width:30px; height:30px; border-radius:8px;
+  background:var(--paper); color:var(--slate);
+  display:grid; place-items:center; font-size:14px; font-weight:800;
+}
+.answer:active{ border-color:var(--slate); }
+.answers.is-locked .answer{ cursor:default; opacity:.62; }
+.answers.is-locked .answer.is-correct,
+.answers.is-locked .answer.is-wrong{ opacity:1; }
+.answer.is-correct{ border-color:var(--ok); background:var(--ok-pale); }
+.answer.is-correct .answer__key{ background:var(--ok); color:var(--white); }
+.answer.is-wrong{ border-color:var(--bad); background:var(--bad-pale); }
+.answer.is-wrong .answer__key{ background:var(--bad); color:var(--white); }
+
+.feedback{
+  margin-top:22px; padding:16px 17px;
+  border-radius:var(--r-sm); border-left:5px solid var(--slate);
+  background:var(--white);
+}
+.feedback.is-ok  { border-left-color:var(--ok);  }
+.feedback.is-bad { border-left-color:var(--bad); }
+.feedback__head{ margin:0 0 6px; font-size:17px; font-weight:800; color:var(--navy); }
+.feedback.is-ok  .feedback__head{ color:var(--ok);  }
+.feedback.is-bad .feedback__head{ color:var(--bad); }
+.feedback__body{ margin:0; font-size:14.5px; line-height:1.55; color:var(--ink-soft); }
+
+.quiz__foot{
+  flex:none; padding:14px 22px calc(var(--safe-b) + 14px);
+  background:var(--paper); box-shadow:0 -8px 18px var(--paper);
+  max-width:560px; width:100%; margin:0 auto;
+}
+.quiz__foot .btn{ margin-bottom:0; }
+
+/* -------------------------------------------------------------- end screen */
+.screen--end{ background:var(--white); }
+.end__scroll{
+  flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch;
+  padding:calc(var(--safe-t) + 34px) 24px calc(var(--safe-b) + 30px);
+  max-width:560px; width:100%; margin:0 auto; text-align:center;
+}
+.end__mark{ display:block; margin:0 auto; height:72px; width:auto; }
+.end__eyebrow{
+  margin:14px 0 2px; font-size:12px; font-weight:800;
+  letter-spacing:1.6px; text-transform:uppercase; color:var(--slate);
+}
+.end__team{ margin:0; font-size:28px; color:var(--navy); letter-spacing:-.4px; }
+.end__score{
+  margin:26px auto 8px; width:190px; height:190px; border-radius:50%;
+  background:var(--navy); color:var(--white);
+  display:grid; place-content:center; align-content:center;
+  box-shadow:var(--shadow-lg);
+}
+.end__score span{ font-size:66px; font-weight:800; line-height:1; color:var(--gold); }
+.end__score small{ display:block; margin-top:8px; font-size:13px; color:var(--slate-light); }
+.end__verdict{ margin:16px 0 26px; font-size:16px; color:var(--ink-soft); }
+
+.results{ list-style:none; margin:0 0 22px; padding:0; text-align:left; }
+.results li{
+  display:flex; align-items:center; gap:12px;
+  padding:12px 2px; border-bottom:1px solid var(--slate-pale);
+  font-size:15px;
+}
+.results li:last-child{ border-bottom:none; }
+.results__badge{
+  flex:none; width:28px; height:28px; border-radius:50%;
+  display:grid; place-items:center;
+  color:var(--white); font-size:15px; font-weight:800;
+}
+.results__badge.ok { background:var(--ok);  }
+.results__badge.bad{ background:var(--bad); }
+.results__name{ flex:1; min-width:0; color:var(--navy); font-weight:600; }
+.results__pts{ flex:none; color:var(--ink-soft); font-size:13.5px; }
+.end__time{ margin:0 0 22px; font-size:13px; color:var(--slate); }
+
+/* MapLibre chrome, toned to the brand */
+.maplibregl-ctrl-attrib{ font-size:10px; }
+.maplibregl-ctrl-bottom-right{ margin-bottom:2px; }

@@ -1,0 +1,21 @@
+/* =========================================================================
+   marker.css - the numbered map pin, shared by the game and the editor.
+   Requires css/tokens.css. The is-done / is-miss / is-near states are only
+   used by the game; the editor adds its own selected state.
+   ========================================================================= */
+
+.pin{
+  width:34px; height:34px; border-radius:50% 50% 50% 4px;
+  transform:rotate(-45deg);
+  background:var(--slate); border:3px solid var(--white);
+  box-shadow:var(--shadow);
+  display:grid; place-items:center; cursor:pointer;
+}
+.pin span{
+  transform:rotate(45deg);
+  color:var(--white); font-size:14px; font-weight:800;
+}
+.pin.is-done{ background:var(--ok); }
+.pin.is-miss{ background:var(--bad); }
+.pin.is-near{ background:var(--navy); animation:pulse 1.4s ease-in-out infinite; }
+@keyframes pulse{ 50%{ box-shadow:0 0 0 10px rgba(27,58,92,.18); } }

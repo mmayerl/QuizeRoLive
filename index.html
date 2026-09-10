@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#17385F">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>QuizeRo &ndash; Hochschule f&uuml;r Wirtschaft &amp; Gesellschaft des BFI Wien</title>
+<link rel="icon" href="assets/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5/dist/maplibre-gl.css">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/marker.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============================== START ============================== -->
+<section class="screen screen--start" id="screen-start">
+  <div class="start__scroll">
+    <div class="brand">
+      <img class="brand__logo" src="assets/logo.png" alt="Hochschule f&uuml;r Wirtschaft &amp; Gesellschaft des BFI Wien">
+    </div>
+
+    <h1 class="start__title" id="start-title">QuizeRo</h1>
+    <p class="start__sub" id="start-sub">Die Schnitzeljagd f&uuml;r Erstsemestrige</p>
+
+    <ol class="steps">
+      <li><span class="steps__n">1</span><span>Ihr bekommt eine Karte mit euren Zielorten.</span></li>
+      <li><span class="steps__n">2</span><span>Geht als Team hin &ndash; ein Handy pro Team gen&uuml;gt.</span></li>
+      <li><span class="steps__n">3</span><span>Am Ziel &ouml;ffnet sich automatisch eine Frage. Richtig = Punkt.</span></li>
+    </ol>
+
+    <label class="field">
+      <span class="field__label">Teamname</span>
+      <input id="team-name" type="text" maxlength="28" autocomplete="off"
+             autocapitalize="words" placeholder="z.&nbsp;B. Die Neu Marxer">
+    </label>
+
+    <button class="btn btn--primary" id="btn-start">Spiel starten</button>
+    <button class="btn btn--ghost" id="btn-resume" hidden>Laufendes Spiel fortsetzen</button>
+    <button class="btn btn--link" id="btn-reset-start" hidden>Gespeichertes Spiel verwerfen</button>
+
+    <p class="note">Die App braucht Zugriff auf euren <strong>Standort</strong> und (f&uuml;r die
+      Blickrichtung) auf die <strong>Bewegungssensoren</strong>. Es werden keine Daten
+      &uuml;bertragen &ndash; alles bleibt auf eurem Ger&auml;t.</p>
+
+    <p class="note note--err" id="start-error" hidden></p>
+  </div>
+</section>
+
+<!-- ============================== MAP ============================== -->
+<section class="screen screen--map" id="screen-map" hidden>
+  <header class="topbar">
+    <span class="topbar__logo" id="topbar-mark">
+      <img src="assets/logo-mark.png" alt="Hochschule f&uuml;r Wirtschaft &amp; Gesellschaft des BFI Wien">
+    </span>
+    <div class="topbar__team">
+      <strong id="hud-team">Team</strong>
+      <span id="hud-progress">0 von 0 Orten</span>
+    </div>
+    <div class="score" title="Punkte">
+      <span class="score__val" id="hud-score">0</span>
+      <span class="score__lbl">Punkte</span>
+    </div>
+  </header>
+
+  <div class="progressbar"><i id="hud-bar" style="width:0%"></i></div>
+
+  <div class="mapwrap">
+    <div id="map"></div>
+
+    <div class="mapctl">
+      <button class="iconbtn" id="btn-compass" title="Norden / Blickrichtung">
+        <svg viewBox="0 0 40 40" class="needle" id="needle" aria-hidden="true">
+          <polygon points="20,7 26,29 20,24 14,29" fill="currentColor"/>
+        </svg>
+      </button>
+      <button class="iconbtn" id="btn-zoom-in"  title="Vergr&ouml;&szlig;ern">+</button>
+      <button class="iconbtn" id="btn-zoom-out" title="Verkleinern">&minus;</button>
+      <button class="iconbtn iconbtn--accent" id="btn-recenter" title="Zu meiner Position">
+        <svg viewBox="0 0 40 40" aria-hidden="true">
+          <circle cx="20" cy="20" r="6" fill="currentColor"/>
+          <circle cx="20" cy="20" r="12" fill="none" stroke="currentColor" stroke-width="2.5"/>
+          <path d="M20 2v6M20 32v6M2 20h6M32 20h6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="banner" id="banner" hidden></div>
+    <div class="devbadge" id="devbadge" hidden>Testmodus &middot; auf die Karte tippen</div>
+  </div>
+
+  <div class="sheet" id="sheet">
+    <div class="sheet__row">
+      <div class="sheet__arrow"><svg viewBox="0 0 40 40" id="sheet-arrow" aria-hidden="true">
+        <polygon points="20,4 32,34 20,27 8,34" fill="currentColor"/></svg></div>
+      <div class="sheet__txt">
+        <strong id="sheet-name">Suche Standort&hellip;</strong>
+        <span id="sheet-hint"></span>
+      </div>
+      <div class="sheet__dist" id="sheet-dist">&ndash;</div>
+    </div>
+    <p class="sheet__acc" id="sheet-acc"></p>
+  </div>
+</section>
+
+<!-- ============================== QUIZ ============================== -->
+<section class="screen screen--quiz" id="screen-quiz" hidden>
+  <div class="quiz__scroll">
+    <p class="quiz__eyebrow" id="quiz-eyebrow">Standort erreicht</p>
+    <h2 class="quiz__place" id="quiz-place"></h2>
+    <p class="quiz__intro" id="quiz-intro"></p>
+    <h3 class="quiz__q" id="quiz-question"></h3>
+    <div class="answers" id="quiz-answers"></div>
+    <div class="feedback" id="quiz-feedback" hidden>
+      <p class="feedback__head" id="feedback-head"></p>
+      <p class="feedback__body" id="feedback-body"></p>
+    </div>
+  </div>
+  <div class="quiz__foot">
+    <button class="btn btn--primary" id="btn-quiz-next" hidden>Weiter</button>
+  </div>
+</section>
+
+<!-- ============================== END ============================== -->
+<section class="screen screen--end" id="screen-end" hidden>
+  <div class="end__scroll">
+    <img class="end__mark" src="assets/logo-mark.png" alt="Hochschule f&uuml;r Wirtschaft &amp; Gesellschaft des BFI Wien">
+    <p class="end__eyebrow">Geschafft!</p>
+    <h2 class="end__team" id="end-team"></h2>
+    <div class="end__score">
+      <span id="end-points">0</span>
+      <small id="end-max">von 0 Punkten</small>
+    </div>
+    <p class="end__verdict" id="end-verdict"></p>
+    <ul class="results" id="end-results"></ul>
+    <p class="end__time" id="end-time"></p>
+    <button class="btn btn--ghost" id="btn-restart">Neues Spiel starten</button>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@5/dist/maplibre-gl.js"></script>
+<script src="js/geo.js"></script>
+<script src="js/basemap.js"></script>
+<script src="js/state.js"></script>
+<script src="js/map.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
