@@ -11,7 +11,7 @@
     "Die Fragen sind Vorschläge und dürfen gerne durch eigene ersetzt werden."
   ],
   "game": {
-    "version": "2.1.0",
+    "version": "2.1.1",
     "title": "QuizeRo",
     "subtitle": "Die Schnitzeljagd für Erstsemestrige",
     "defaultRadiusMeters": 40,
@@ -33,20 +33,20 @@
       "name": "Media Quarter Marx",
       "hint": "Maria-Jacobi-Gasse 1, beim Haupteingang",
       "intro": "Willkommen an eurem neuen Studienort im Media Quarter Marx.",
-      "lat": 48.188758,
-      "lon": 16.405022,
+      "lat": 48.188723,
+      "lon": 16.404942,
       "radiusMeters": 25,
       "points": 1,
       "question": {
-        "text": "In welchem Wiener Gemeindebezirk liegt das Media Quarter Marx?",
+        "text": "Welches der folgenden Lokale gibt es hier am MQM?",
         "answers": [
-          "3. Bezirk – Landstraße",
-          "2. Bezirk – Leopoldstadt",
-          "11. Bezirk – Simmering",
-          "4. Bezirk – Wieden"
+          "the nice guys",
+          "McDonalds",
+          "Schnitzelwirt",
+          "Kebappalast"
         ],
         "correctIndex": 0,
-        "explanation": "Neu Marx hat die Postleitzahl 1030 und liegt damit in der Landstraße, dem 3. Wiener Gemeindebezirk."
+        "explanation": "Im MQM gibt es zwei Lokale: the nice guys und Neumee Asia Restaurant."
       }
     },
     {
@@ -117,9 +117,9 @@
       "name": "U-Bahn-Station Schlachthausgasse",
       "hint": "Beim Stationsvorplatz an der Schlachthausgasse",
       "intro": "Eure schnellste Verbindung von und zur Hochschule.",
-      "lat": 48.194583,
-      "lon": 16.406273,
-      "radiusMeters": 50,
+      "lat": 48.194085,
+      "lon": 16.407454,
+      "radiusMeters": 35,
       "points": 1,
       "question": {
         "text": "Welche U-Bahn-Linie hält in der Station Schlachthausgasse?",
@@ -145,13 +145,34 @@
       "question": {
         "text": "Welches Tier hängt hier an der Decke?",
         "answers": [
-          "A",
-          "B",
-          "C",
-          "D"
+          "Wal",
+          "Hai",
+          "Löwe",
+          "Giraffe"
         ],
         "correctIndex": 0,
         "explanation": ""
+      }
+    },
+    {
+      "id": "robert-hochner-park",
+      "name": "Robert-Hochner-Park",
+      "hint": "",
+      "intro": "",
+      "lat": 48.18783,
+      "lon": 16.403386,
+      "radiusMeters": 35,
+      "points": 1,
+      "question": {
+        "text": "Wie viele \"Erythrozyten\" sind im Park verteilt?",
+        "answers": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correctIndex": 0,
+        "explanation": "Die Erythrozyten sind durch die roten Hochbeete dargestellt."
       }
     }
   ]
