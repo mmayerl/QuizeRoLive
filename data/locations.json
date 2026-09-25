@@ -11,7 +11,7 @@
     "Die Fragen sind Vorschläge und dürfen gerne durch eigene ersetzt werden."
   ],
   "game": {
-    "version": "2.1.1",
+    "version": "2.1.2",
     "title": "QuizeRo",
     "subtitle": "Die Schnitzeljagd für Erstsemestrige",
     "defaultRadiusMeters": 40,
@@ -138,8 +138,8 @@
       "name": "Biologiezentrum",
       "hint": "Drinnen.",
       "intro": "Das neue Biologiezentrum der Universität Wien, welches 2021 eröffnet wurde.",
-      "lat": 48.190851,
-      "lon": 16.402219,
+      "lat": 48.190447,
+      "lon": 16.401858,
       "radiusMeters": 25,
       "points": 1,
       "question": {
@@ -166,10 +166,10 @@
       "question": {
         "text": "Wie viele \"Erythrozyten\" sind im Park verteilt?",
         "answers": [
-          "1",
-          "2",
-          "3",
-          "4"
+          "12",
+          "9",
+          "16",
+          "7"
         ],
         "correctIndex": 0,
         "explanation": "Die Erythrozyten sind durch die roten Hochbeete dargestellt."
